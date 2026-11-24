@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security report
+    url: https://github.com/kodejeet/nautilus-foldersize/security/advisories/new
+    about: Report vulnerabilities privately, not in a public issue.
+  - name: Troubleshooting guide
+    url: https://github.com/kodejeet/nautilus-foldersize/blob/main/docs/troubleshooting.md
+    about: Check common installation, pill, and column problems first.

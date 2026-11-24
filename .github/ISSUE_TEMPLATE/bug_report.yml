@@ -1,0 +1,102 @@
+name: Bug report
+description: Report a crash, wrong size, missing pill, or installation problem
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please run `./scripts/doctor.sh` and include
+        its output. Remove personal paths and file names before posting.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Floating pill
+        - Folder Size column
+        - Installation or uninstall
+        - Performance
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Nautilus
+        2. Select ...
+        3. See ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: input
+    id: nautilus
+    attributes:
+      label: Nautilus version
+      description: Output of `nautilus --version`
+      placeholder: "GNOME nautilus 50.2.2"
+    validations:
+      required: true
+
+  - type: input
+    id: distribution
+    attributes:
+      label: Distribution and version
+      placeholder: "Ubuntu 26.04 LTS"
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Doctor output
+      description: Paste the output of `./scripts/doctor.sh`.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant journal lines
+      description: Output of `journalctl --user -t nautilus-foldersize -n 100 --no-pager`.
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed personal paths, usernames, and file names from this report.
+          required: true
+        - label: This is not a security issue (those go through SECURITY.md).
+          required: true

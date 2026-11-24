@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+*.py text diff=python
+*.sh text eol=lf diff=shell
+*.md text
+*.yml text
+*.yaml text
+*.json text
+LICENSE text
+
+*.png binary
+*.jpg binary
+*.gif binary
