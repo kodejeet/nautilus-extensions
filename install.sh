@@ -172,7 +172,8 @@ distribution, then run this script again."
   api="$(nautilus_api || true)"
 fi
 [ -n "$api" ] || die "Nautilus 4.x Python bindings are still unavailable.
-On Debian/Ubuntu install python3-nautilus and gir1.2-nautilus-4.1."
+On Debian/Ubuntu install python3-nautilus; it pulls the matching
+gir1.2-nautilus-4.0 or gir1.2-nautilus-4.1 typelib for your release."
 
 # ---------------------------------------------------------------------------
 # Install the extension

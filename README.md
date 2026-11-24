@@ -204,12 +204,13 @@ More detail: [`docs/architecture.md`](docs/architecture.md).
 Install the bindings and confirm the API is visible:
 
 ```sh
-python3 -c "import gi; gi.require_version('Nautilus', '4.1')"
+python3 -c "import gi; gi.require_version('Nautilus', '4.1')" ||
+python3 -c "import gi; gi.require_version('Nautilus', '4.0')"
 sudo apt install python3-nautilus
 ```
 
 On Ubuntu 24.04 the typelib is `Nautilus-4.0`; the extension falls back to it
-automatically.
+automatically. The first command may fail on 24.04; the second covers it.
 
 **Sizes differ from `du -sh`**
 
