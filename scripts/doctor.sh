@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Read-only environment diagnostics for Nautilus Folder Size bug reports.
+# Read-only environment diagnostics for Nautilus Extensions bug reports.
 # This script never installs, removes, or modifies anything.
 
 set -uo pipefail
 
 APP="nautilus-foldersize"
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-EXTENSION="${XDG_DATA_HOME:-$HOME/.local/share}/nautilus-python/extensions/foldersize.py"
+EXT_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nautilus-python/extensions"
 
 section() { printf '\n== %s ==\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
@@ -68,18 +68,30 @@ else
     printf 'journalctl: missing\n'
 fi
 
-section "Extension"
-if [ -f "$EXTENSION" ]; then
-    printf 'Installed: %s\n' "$EXTENSION"
-    if have python3; then
-        printf 'Compile check: '
-        if python3 -c 'import sys; compile(open(sys.argv[1], encoding="utf-8").read(), sys.argv[1], "exec")' "$EXTENSION" 2>&1; then
-            printf 'ok\n'
+section "Extensions"
+shopt -s nullglob
+sources=("$HERE"/extensions/*.py)
+shopt -u nullglob
+if [ "${#sources[@]}" -eq 0 ]; then
+    printf 'No extension modules found in %s\n' "$HERE/extensions"
+fi
+for src in "${sources[@]}"; do
+    name="$(basename "$src")"
+    installed="$EXT_DIR/$name"
+    if [ -f "$installed" ]; then
+        printf '%s: installed (%s)\n' "$name" "$installed"
+        if have python3; then
+            printf '  compile check: '
+            if python3 -c 'import sys; compile(open(sys.argv[1], encoding="utf-8").read(), sys.argv[1], "exec")' "$installed" 2>&1; then
+                printf 'ok\n'
+            fi
         fi
+    else
+        printf '%s: not installed (expected %s)\n' "$name" "$installed"
     fi
-else
-    printf 'Not installed at %s\n' "$EXTENSION"
-    printf 'Run ./install.sh from %s\n' "$HERE"
+done
+if [ "${#sources[@]}" -gt 0 ]; then
+    printf 'Run ./install.sh from %s to install missing modules.\n' "$HERE"
 fi
 
 section "State"

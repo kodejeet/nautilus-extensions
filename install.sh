@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
-# Per-user installer for Nautilus Folder Size.
+# Per-user installer for the Nautilus Extensions collection.
 #
-# Installs foldersize.py into
+# Installs every extension module in extensions/ into
 #   ${XDG_DATA_HOME:-~/.local/share}/nautilus-python/extensions/
 # and makes sure the Nautilus Python bindings are present. It never patches
 # system Nautilus files, rebuilds Nautilus, or uses LD_PRELOAD.
 
 set -euo pipefail
 
-APP="nautilus-foldersize"
+APP="nautilus-extensions"
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-SRC="$HERE/foldersize.py"
+SRC_DIR="$HERE/extensions"
 DEST_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nautilus-python/extensions"
-DEST="$DEST_DIR/foldersize.py"
 
 say() { printf '%s\n' "$*"; }
 warn() { printf '%s\n' "$*" >&2; }
@@ -21,9 +20,13 @@ die() {
   exit 1
 }
 
-[ -f "$SRC" ] || die "foldersize.py not found next to install.sh ($SRC)"
+shopt -s nullglob
+SOURCES=("$SRC_DIR"/*.py)
+shopt -u nullglob
 
-APP_VERSION="$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' "$SRC" | head -n 1)"
+[ "${#SOURCES[@]}" -gt 0 ] || die "no extension modules found in $SRC_DIR"
+
+APP_VERSION="$(tr -d '[:space:]' < "$HERE/VERSION" 2>/dev/null || true)"
 [ -n "$APP_VERSION" ] || APP_VERSION="unknown"
 
 restart=1
@@ -31,7 +34,7 @@ dry_run=0
 
 usage() {
   cat <<EOF
-Nautilus Folder Size installer v$APP_VERSION
+Nautilus Extensions installer v$APP_VERSION
 
 Usage: ./install.sh [options]
 
@@ -41,8 +44,8 @@ Options:
   --version      print the version and exit
   -h, --help     show this help
 
-The extension is installed for the current user only. The target directory is
-${DEST_DIR}.
+All extensions in ${SRC_DIR} are installed for the current user only.
+The target directory is ${DEST_DIR}.
 EOF
 }
 
@@ -176,31 +179,39 @@ On Debian/Ubuntu install python3-nautilus; it pulls the matching
 gir1.2-nautilus-4.0 or gir1.2-nautilus-4.1 typelib for your release."
 
 # ---------------------------------------------------------------------------
-# Install the extension
+# Install the extensions
 # ---------------------------------------------------------------------------
 
-say "Nautilus Folder Size $APP_VERSION"
+say "Nautilus Extensions $APP_VERSION"
 say "Nautilus Python API: $api"
-say "Source:              $SRC"
-say "Destination:         $DEST"
+say "Source:              $SRC_DIR"
+say "Destination:         $DEST_DIR"
 
 if [ "$dry_run" -eq 1 ]; then
+  for src in "${SOURCES[@]}"; do
+    say "Would install $(basename "$src")"
+  done
   say "Dry run: nothing was installed."
   exit 0
 fi
 
 mkdir -p "$DEST_DIR"
-install -m 0644 "$SRC" "$DEST"
 
-python3 - "$DEST" <<'PY' || die "installed file failed to compile"
+installed=()
+for src in "${SOURCES[@]}"; do
+  name="$(basename "$src")"
+  dest="$DEST_DIR/$name"
+  install -m 0644 "$src" "$dest"
+  python3 - "$dest" <<'PY' || die "installed file failed to compile"
 import sys
 
 path = sys.argv[1]
 with open(path, "r", encoding="utf-8") as handle:
     compile(handle.read(), path, "exec")
 PY
-
-say "Installed $DEST"
+  say "Installed $dest"
+  installed+=("$name")
+done
 
 if [ "$restart" -eq 1 ]; then
   say "Restarting Nautilus..."
@@ -208,9 +219,10 @@ if [ "$restart" -eq 1 ]; then
 fi
 
 say ""
-say "Select a folder in Nautilus to see its size in the floating bar."
+say "Installed ${#installed[@]} extension(s): ${installed[*]}"
+say "Folder Size: select a folder to see its size in the floating bar."
 say "List view: enable the \"Folder Size\" column (Visible Columns menu)."
-say "Logs:      journalctl --user -t $APP -f"
+say "Logs:      journalctl --user -t nautilus-foldersize -f"
 say "Disable the pill only:"
 say "           NAUTILUS_FOLDERSIZE_NO_PILL=1 nautilus"
-say "           or ~/.config/$APP/config.json  {\"pill\": false}"
+say "           or ~/.config/nautilus-foldersize/config.json  {\"pill\": false}"

@@ -1,13 +1,26 @@
-# Nautilus Folder Size
+# Nautilus Extensions
 
-[![CI](https://github.com/kodejeet/nautilus-foldersize/actions/workflows/ci.yml/badge.svg)](https://github.com/kodejeet/nautilus-foldersize/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/kodejeet/nautilus-foldersize?include_prereleases&sort=semver)](https://github.com/kodejeet/nautilus-foldersize/releases)
+[![CI](https://github.com/kodejeet/nautilus-extensions/actions/workflows/ci.yml/badge.svg)](https://github.com/kodejeet/nautilus-extensions/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/kodejeet/nautilus-extensions?include_prereleases&sort=semver)](https://github.com/kodejeet/nautilus-extensions/releases)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Nautilus 43+](https://img.shields.io/badge/Nautilus-43%2B-4a86cf)](https://gitlab.gnome.org/GNOME/nautilus)
 
+A collection of small, per-user extensions for GNOME Files (Nautilus). Each
+extension is a single Python file installed under
+`~/.local/share/nautilus-python/extensions/`; nothing system-wide is patched,
+rebuilt, replaced, or `LD_PRELOAD`ed.
+
+## Extensions
+
+| Extension | What it does |
+| --- | --- |
+| **Folder Size** | Shows selected folder sizes in the floating bar and adds a **Folder Size** list-view column. |
+
+## Folder Size
+
 See the size of selected folders without opening a terminal.
 
-Nautilus Folder Size is a small, per-user Nautilus extension with two features:
+Folder Size adds two features:
 
 - **Floating-bar size.** Select one or more folders and the floating selection
   bar gains the total apparent size:
@@ -59,15 +72,15 @@ floating bar by its GTK CSS class. It does **not** patch, rebuild, replace, or
 | 24.04 LTS | 46.x | 4.0 | Supported via the 4.0 fallback |
 | 26.04 LTS | 50.x | 4.1 | Primary development and live-test target |
 
-The extension requests the `Nautilus-4.1` typelib first and falls back to
+Folder Size requests the `Nautilus-4.1` typelib first and falls back to
 `Nautilus-4.0`, so the same file works on both releases. The test suite runs
 headlessly and does not require either typelib.
 
 ## Install
 
 ```sh
-git clone https://github.com/kodejeet/nautilus-foldersize.git
-cd nautilus-foldersize
+git clone https://github.com/kodejeet/nautilus-extensions.git
+cd nautilus-extensions
 ./install.sh
 ```
 
@@ -75,7 +88,7 @@ The installer:
 
 1. checks Python, PyGObject, Nautilus, and the Nautilus 4.x bindings;
 2. offers to install `python3-nautilus` (or the distribution equivalent);
-3. copies `foldersize.py` to
+3. copies every module in `extensions/` to
    `${XDG_DATA_HOME:-~/.local/share}/nautilus-python/extensions/`;
 4. restarts Nautilus with `nautilus -q`.
 
@@ -92,7 +105,7 @@ Options:
 
 ### Manual install
 
-Copy `foldersize.py` to
+Copy the modules you want from `extensions/` to
 `~/.local/share/nautilus-python/extensions/` and run `nautilus -q`.
 
 ## Use
@@ -162,7 +175,7 @@ For a bug report, run the bundled doctor script and include its output:
 
 ## How it works
 
-The extension runs inside the Nautilus process through `nautilus-python`.
+Folder Size runs inside the Nautilus process through `nautilus-python`.
 
 - **Column:** implements `Nautilus.ColumnProvider` and
   `Nautilus.InfoProvider`, adding the private `folder_size` attribute.

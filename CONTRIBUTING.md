@@ -1,4 +1,4 @@
-# Contributing to Nautilus Folder Size
+# Contributing to Nautilus Extensions
 
 Thanks for helping improve the extension. Bug reports, compatibility reports,
 documentation fixes, and focused pull requests are all welcome.
@@ -19,8 +19,8 @@ The extension has no third-party runtime dependencies beyond what Nautilus
 already ships. Development only needs Python 3.10+, `pytest`, and `ruff`.
 
 ```sh
-git clone https://github.com/kodejeet/nautilus-foldersize.git
-cd nautilus-foldersize
+git clone https://github.com/kodejeet/nautilus-extensions.git
+cd nautilus-extensions
 
 python3 -m venv .venv
 . .venv/bin/activate
@@ -42,7 +42,7 @@ path is still `./install.sh`.
 ## Tests
 
 The unit suite is fully headless. It replaces `gi` with
-`tests/stubs/gi`, then loads the real `foldersize.py`. That means tests run
+`tests/stubs/gi`, then loads the real `extensions/foldersize.py`. That means tests run
 without GTK, Nautilus, a display server, or a running desktop session.
 
 ```sh
@@ -100,8 +100,8 @@ and both a single window and two windows.
 
 ## Code guidelines
 
-- Keep `foldersize.py` a single self-contained file. Nautilus loads that file
-  directly; no package import happens at runtime.
+- Keep each extension a single self-contained file in `extensions/`.
+  Nautilus loads that file directly; no package import happens at runtime.
 - Keep runtime dependencies to the Python standard library plus PyGObject,
   GTK 4, and Nautilus.
 - Never do filesystem work on the GTK main loop. Use `SizeService` workers.
@@ -146,7 +146,8 @@ Small pull requests are easier to review than large mixed ones.
 
 Maintainers:
 
-1. Update `__version__` in `foldersize.py` and `version` in `pyproject.toml`.
+1. Update `VERSION`, `version` in `pyproject.toml`, and `__version__` in the
+   changed extension modules.
 2. Update `CHANGELOG.md`.
 3. Run `make check` and the manual checklist.
 4. Commit, tag `vX.Y.Z`, and push the tag.

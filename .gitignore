@@ -23,7 +23,7 @@ htmlcov/
 *.sqlite3-shm
 *.sqlite3-wal
 *.log
-nautilus-foldersize-*.tar.gz
+nautilus-extensions-*.tar.gz
 
 # Editors / OS
 .DS_Store

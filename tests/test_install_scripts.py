@@ -165,6 +165,7 @@ def test_install_dry_run(tmp_path):
     env, data, _cache, _config = temp_env(tmp_path)
     result = run(INSTALL, "--dry-run", env=env)
     assert result.returncode == 0, result.stderr
-    assert "Nautilus Folder Size 0.1.0" in result.stdout
+    assert "Nautilus Extensions 0.1.0" in result.stdout
+    assert "Would install foldersize.py" in result.stdout
     assert "Dry run" in result.stdout
     assert not (data / "nautilus-python" / "extensions" / "foldersize.py").exists()

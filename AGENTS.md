@@ -4,11 +4,13 @@ Guidance for AI coding agents and automation working in this repository.
 
 ## Project summary
 
-Nautilus Folder Size is a single-file Nautilus extension (`foldersize.py`)
-plus a per-user installer. It appends the selected folders' total size to
-Nautilus' floating selection bar and provides an official **Folder Size**
-list-view column. It supports the `Nautilus-4.1` and `Nautilus-4.0` Python
-APIs, targeting Ubuntu 24.04 LTS and 26.04 LTS.
+Nautilus Extensions is an umbrella repository for small, per-user Nautilus
+extensions. The first extension, Folder Size (`extensions/foldersize.py`),
+appends the selected folders' total size to Nautilus' floating selection bar
+and provides an official **Folder Size** list-view column. It supports the
+`Nautilus-4.1` and `Nautilus-4.0` Python APIs, targeting Ubuntu 24.04 LTS and
+26.04 LTS. New extensions live in `extensions/` and are installed by the same
+scripts.
 
 ## First commands
 
@@ -22,12 +24,21 @@ bash -n install.sh uninstall.sh scripts/*.sh
 If `ruff` is unavailable, use `uvx ruff` or install the `dev` extra. Do not
 skip the tests.
 
+## Adding an extension
+
+Add a single self-contained `extensions/<name>.py` module. The installer and
+uninstaller discover `extensions/*.py` automatically. Add headless tests under
+`tests/`, document user-facing behavior in `README.md`, and update
+`CHANGELOG.md`. Keep extension-specific cache/config names separate so
+`uninstall.sh --purge` can remove them.
+
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `foldersize.py` | The entire runtime extension; installed as one file |
-| `install.sh` | Per-user installer, dependency check, restart |
+| `extensions/*.py` | One self-contained module per extension; all are installed |
+| `VERSION` | Release version used by the installer and packaging |
+| `install.sh` | Installs every module in `extensions/`, checks dependencies, restarts Nautilus |
 | `uninstall.sh` | Per-user remover with `--purge` and `--dry-run` |
 | `scripts/doctor.sh` | Read-only environment diagnostics |
 | `scripts/package.sh` | Release tarball + checksum builder |
@@ -37,8 +48,9 @@ skip the tests.
 
 ## Invariants (do not break)
 
-1. `foldersize.py` must stay self-contained. Nautilus loads that single file;
-   runtime imports must be standard library + PyGObject/GTK/Nautilus.
+1. Every module in `extensions/` must stay self-contained. Nautilus loads
+   each file directly; runtime imports must be standard library +
+   PyGObject/GTK/Nautilus.
 2. Never block the GTK main loop. All scans go through `SizeService` workers.
 3. All UI writes happen on the main loop via `GLib.idle_add()`.
 4. Every GTK callback is guarded (`@safe` or equivalent). Exceptions must never
@@ -78,7 +90,8 @@ floating-bar code.
 
 ## Versioning and release
 
-- Version lives in `foldersize.py` (`__version__`) and `pyproject.toml`.
+- Release version lives in `VERSION`, `pyproject.toml`, and each extension's
+  `__version__`. Keep them in sync; `tests/test_metadata.py` enforces it.
 - Update `CHANGELOG.md` for user-visible changes.
 - Tag format: `vX.Y.Z`.
 - `.github/workflows/release.yml` builds `scripts/package.sh` output and

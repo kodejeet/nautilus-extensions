@@ -1,12 +1,12 @@
 # Architecture
 
-This document explains how the extension fits into Nautilus and where the
-important invariants live. It is aimed at contributors changing
-`foldersize.py`.
+This document explains how the Folder Size extension fits into Nautilus and
+where the important invariants live. It is aimed at contributors changing
+`extensions/foldersize.py`.
 
 ## Process model
 
-`nautilus-python` imports `foldersize.py` inside every Nautilus process that
+`nautilus-python` imports each module from `extensions/` inside every Nautilus process that
 loads user extensions. The module is imported once; `ensure_started()` creates
 a process-wide `Core` object lazily when either provider is instantiated.
 

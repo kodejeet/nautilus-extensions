@@ -22,7 +22,7 @@ Live environment:
 
 ## Checklist
 
-- [ ] The change keeps `foldersize.py` self-contained.
+- [ ] The change keeps each extension module self-contained.
 - [ ] No filesystem work was added to the GTK main loop.
 - [ ] New UI writes go through `GLib.idle_add()`.
 - [ ] New callbacks are exception-guarded.

@@ -13,7 +13,7 @@ Please do **not** open a public issue for a security problem.
 
 Use GitHub's private vulnerability reporting:
 
-<https://github.com/kodejeet/nautilus-foldersize/security/advisories/new>
+<https://github.com/kodejeet/nautilus-extensions/security/advisories/new>
 
 Include:
 

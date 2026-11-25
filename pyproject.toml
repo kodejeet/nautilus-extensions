@@ -3,14 +3,14 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nautilus-foldersize"
+name = "nautilus-extensions"
 version = "0.1.0"
-description = "Show selected folder sizes in Nautilus' floating bar and a list-view column"
+description = "A collection of per-user Nautilus extensions, starting with Folder Size"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "GPL-3.0-or-later" }
 authors = [{ name = "kodejeet" }]
-keywords = ["nautilus", "gnome", "files", "folder-size", "nautilus-python"]
+keywords = ["nautilus", "gnome", "files", "folder-size", "nautilus-python", "extensions"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: X11 Applications :: GTK",
@@ -27,11 +27,12 @@ dependencies = []
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.urls]
-Homepage = "https://github.com/kodejeet/nautilus-foldersize"
-Issues = "https://github.com/kodejeet/nautilus-foldersize/issues"
-Changelog = "https://github.com/kodejeet/nautilus-foldersize/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/kodejeet/nautilus-extensions"
+Issues = "https://github.com/kodejeet/nautilus-extensions/issues"
+Changelog = "https://github.com/kodejeet/nautilus-extensions/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
+package-dir = { "" = "extensions" }
 py-modules = ["foldersize"]
 
 [tool.pytest.ini_options]

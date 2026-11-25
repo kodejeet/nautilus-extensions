@@ -160,7 +160,7 @@ system packages.
 
 ## Reporting a bug
 
-Open <https://github.com/kodejeet/nautilus-foldersize/issues> and include:
+Open <https://github.com/kodejeet/nautilus-extensions/issues> and include:
 
 - the output of `./scripts/doctor.sh`;
 - the Nautilus version and distribution release;

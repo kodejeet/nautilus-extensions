@@ -6,7 +6,7 @@ RUFF ?= ruff
 
 help:
 	@printf '%s\n' \
-		'Nautilus Folder Size' \
+		'Nautilus Extensions' \
 		'' \
 		'  make test       Run the headless test suite' \
 		'  make lint       Check formatting, lint, and shell syntax' \
@@ -46,5 +46,5 @@ release:
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache build dist
-	rm -rf __pycache__ tests/__pycache__ tests/stubs/gi/__pycache__ tests/stubs/gi/repository/__pycache__
+	rm -rf __pycache__ extensions/__pycache__ tests/__pycache__ tests/stubs/gi/__pycache__ tests/stubs/gi/repository/__pycache__
 	find . -name '*.pyc' -delete

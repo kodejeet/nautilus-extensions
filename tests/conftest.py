@@ -2,7 +2,7 @@
 
 The extension is written as a Nautilus process plugin, so importing it normally
 requires GTK, a display, and the Nautilus typelib. The tests replace ``gi`` with
-the tiny stub in ``tests/stubs`` and load the real ``foldersize.py`` directly.
+the tiny stub in ``tests/stubs`` and load the real ``extensions/foldersize.py`` directly.
 That keeps the suite fast, headless, and independent of the host desktop.
 """
 
@@ -31,9 +31,9 @@ def load_extension():
     global _counter
     _counter += 1
     name = "foldersize_test_%d" % _counter
-    spec = importlib.util.spec_from_file_location(name, ROOT / "foldersize.py")
+    spec = importlib.util.spec_from_file_location(name, ROOT / "extensions" / "foldersize.py")
     if spec is None or spec.loader is None:
-        raise RuntimeError("cannot load foldersize.py")
+        raise RuntimeError("cannot load extensions/foldersize.py")
     module = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
     spec.loader.exec_module(module)

@@ -6,6 +6,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed the repository to **Nautilus Extensions** and moved Folder Size to
+  `extensions/foldersize.py` so more extensions can live in the same project.
+- `install.sh` and `uninstall.sh` now discover and manage every module in
+  `extensions/` instead of a single hardcoded file.
+- Release archives are now named `nautilus-extensions-<version>.tar.gz`.
+
 ## [0.1.0] - 2026-11-25
 
 ### Added
@@ -48,5 +56,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   redesign may disable the pill while keeping the column functional.
 - Very large selections are capped at 2000 items for safety.
 
-[Unreleased]: https://github.com/kodejeet/nautilus-foldersize/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/kodejeet/nautilus-foldersize/releases/tag/v0.1.0
+[Unreleased]: https://github.com/kodejeet/nautilus-extensions/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/kodejeet/nautilus-extensions/releases/tag/v0.1.0

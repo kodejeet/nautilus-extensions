@@ -37,7 +37,7 @@ jobs:
           python -m pip install pytest
 
       - name: Byte-compile
-        run: python -m compileall -q foldersize.py tests
+        run: python -m compileall -q extensions tests
 
       - name: Run tests
         run: python -m pytest -q
@@ -96,6 +96,6 @@ jobs:
       - name: Upload archive
         uses: actions/upload-artifact@v7
         with:
-          name: nautilus-foldersize-release
+          name: nautilus-extensions-release
           path: dist/*
           if-no-files-found: error
